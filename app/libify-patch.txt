@@ -1,0 +1,29 @@
+diff --git a/vector_add/CMakeLists.txt b/vector_add/CMakeLists.txt
+index 714509e..dab44e6 100755
+--- a/vector_add/CMakeLists.txt
++++ b/vector_add/CMakeLists.txt
+@@ -1,6 +1,7 @@
+ include_directories ("${PROJECT_SOURCE_DIR}/include" ${OpenCL_INCLUDE_DIRS})
+ 
+-add_executable(ocl_vector_add vector_add.cpp)
+-target_compile_features(ocl_vector_add PRIVATE cxx_range_for)
+-target_link_libraries(ocl_vector_add ${OpenCL_LIBRARIES})
++add_library(vector_add SHARED vector_add.cpp)
++target_compile_options(vector_add PUBLIC -Wall -Wextra )
++set_property(TARGET vector_add PROPERTY LINK_FLAGS "-lOpenCL -shared")
++
+ 
+diff --git a/vector_add/vector_add.cpp b/vector_add/vector_add.cpp
+index 5451547..f5ab3e0 100755
+--- a/vector_add/vector_add.cpp
++++ b/vector_add/vector_add.cpp
+@@ -17,7 +17,8 @@
+ #include <CL/cl.hpp>
+ #include <iostream>
+ 
+-int main(){
++//int main(){
++extern "C" int vector_add(){
+ 	try{
+ 
+ 		//get all platforms (drivers)

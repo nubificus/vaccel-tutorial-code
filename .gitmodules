@@ -1,0 +1,7 @@
+[submodule "app/opencl_examples"]
+	path = app/opencl_examples
+	url = https://github.com/nubificus/opencl_examples
+[submodule "vaccelrt"]
+	path = vaccelrt
+	url = https://github.com/cloudkernels/vaccelrt
+	branch = feat_genop

@@ -1,0 +1,119 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 44ff8f7..7b8fe69 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -9,6 +9,7 @@ project(vaccelrt
+ option(BUILD_PLUGIN_VIRTIO "Build the VirtIO plugin" OFF)
+ option(BUILD_PLUGIN_JETSON "Build the Jetson plugin" OFF)
+ option(BUILD_PLUGIN_VSOCK "Build thev vsock plugin" OFF)
++option(BUILD_PLUGIN_VADD "Build the vadd plugin" OFF)
+ option(BUILD_PLUGIN_NOOP "Build the no-op debugging plugin" OFF)
+ option(BUILD_EXAMPLES "Build the examples" OFF)
+ 
+diff --git a/plugins/CMakeLists.txt b/plugins/CMakeLists.txt
+index 7f4e9a0..3d9b0ad 100644
+--- a/plugins/CMakeLists.txt
++++ b/plugins/CMakeLists.txt
+@@ -10,6 +10,10 @@ if (BUILD_PLUGIN_VIRTIO)
+ 	add_subdirectory(virtio)
+ endif(BUILD_PLUGIN_VIRTIO)
+ 
++if (BUILD_PLUGIN_VADD)
++	add_subdirectory(vadd)
++endif(BUILD_PLUGIN_VADD)
++
+ if (BUILD_PLUGIN_VSOCK)
+ 	include(ExternalProject)
+ 
+diff --git a/plugins/vadd/CMakeLists.txt b/plugins/vadd/CMakeLists.txt
+new file mode 100644
+index 0000000..4a4b73c
+--- /dev/null
++++ b/plugins/vadd/CMakeLists.txt
+@@ -0,0 +1,16 @@
++set(include_dirs ${CMAKE_SOURCE_DIR}/src)
++set(SOURCES vaccel.c ${include_dirs}/vaccel.h ${include_dirs}/plugin.h)
++set(VADD_LIB "../../../../app/opencl_examples/build/vector_add")
++
++add_library(vaccel-vadd SHARED ${SOURCES})
++target_include_directories(vaccel-vadd PRIVATE ${include_dirs})
++
++message("Using VADD_LIB ${VADD_LIB}")
++
++set_property(TARGET vaccel-vadd PROPERTY LINK_FLAGS "-lOpenCL -lvector_add -L${VADD_LIB} -shared")
++
++#target_include_directories(vaccel-vadd PRIVATE ${include_dirs} ${VADD_LIB})
++target_link_libraries(vaccel-vadd PRIVATE vector_add OpenCL)
++
++# Setup make install
++install(TARGETS vaccel-vadd DESTINATION "${lib_path}")
+diff --git a/plugins/vadd/vaccel.c b/plugins/vadd/vaccel.c
+new file mode 100644
+index 0000000..fc34445
+--- /dev/null
++++ b/plugins/vadd/vaccel.c
+@@ -0,0 +1,63 @@
++#include <stdio.h>
++#include <plugin.h>
++#include <byteswap.h>
++
++#include "log.h"
++
++int vector_add(int*A,int*B,int*C, int dimension);
++//int vector_add();
++struct vector_arg {
++        size_t len;
++        uint8_t *buf;
++} __attribute__ ((packed));
++
++static int noop(struct vaccel_session *session)
++{
++	vaccel_debug("Calling no-op for session %u", session->session_id);
++
++	vaccel_debug("[vadd] [noop] \n");
++
++	return VACCEL_OK;
++}
++
++static int genop(struct vaccel_session *session, void *out_args, void *in_args,
++			  size_t out_nargs, size_t in_nargs)
++{
++	int i = 0;
++	struct vector_arg *in_arg = in_args;
++	struct vector_arg *out_arg = out_args;
++
++	vaccel_debug("Calling do-op for session %u", session->session_id);
++
++	vaccel_debug("[vadd] [genop] in_nargs: %d, out_nargs: %d\n", in_nargs, out_nargs);
++
++	int dimension = *(in_arg[3].buf);
++	int *A = (int*)in_arg[1].buf;
++	int *B = (int*)in_arg[2].buf;
++	int *C = (int*)out_arg[0].buf;
++	vector_add(A, B, C, dimension);
++
++	return VACCEL_OK;
++}
++
++struct vaccel_op ops[] = {
++	VACCEL_OP_INIT(ops[0],VACCEL_NO_OP, noop),
++	VACCEL_OP_INIT(ops[1],VACCEL_GEN_OP, genop),
++};
++
++static int init(void)
++{
++	return register_plugin_functions(ops, sizeof(ops) / sizeof(ops[0]));
++}
++
++static int fini(void)
++{
++	return VACCEL_OK;
++}
++
++VACCEL_MODULE(
++	.name = "vadd",
++	.version = "0.1",
++	.init = init,
++	.fini = fini
++)
+
