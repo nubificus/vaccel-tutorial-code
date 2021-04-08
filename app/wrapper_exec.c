@@ -4,7 +4,6 @@
 #include <unistd.h>
 
 #include <vaccel.h>
-#include <vaccel_ops.h>
 
 int vaccel_vector_add()
 {
@@ -20,10 +19,10 @@ int vaccel_vector_add()
 
         printf("Initialized session with id: %u\n", sess.session_id);
 
-	char *operation = "vector-add";
-	size_t len = strlen(operation);
+	char *library = "libvector_add.so";
+	char *operation = "vector_add";
 
-        ret = vaccel_genop(&sess, NULL, operation, 0, len);
+        ret = vaccel_exec(&sess, library, operation, NULL, 0, NULL, 0);
 	if (ret) {
 		fprintf(stderr, "Could not run op: %d\n", ret);
 		goto close_session;

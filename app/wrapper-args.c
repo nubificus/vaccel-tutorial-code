@@ -13,14 +13,28 @@ int main(int argc, char **argv)
 	int dimension = sizeof(A)/sizeof(int);
 	int i = 0;
 
-	vector_add(A, B, C, dimension);
-
-	printf("wrapper start printing vector C\n");
+	int ret = vector_add(A, B, C, dimension);
+	if (ret) {
+		printf("Error running operation\n");
+		goto out;
+	}
+				
+	printf("Operation successful!\n");
+	printf("A: "); 
 	for (i=0;i<dimension;i++)
-		printf("%d ", C[i]);
+		printf("%2d ", A[i]);
+	printf("\n+\n");
+	printf("B: "); 
+	for (i=0;i<dimension;i++)
+		printf("%2d ", B[i]);
+	printf("\n=\n");
+	printf("C: "); 
+	for (i=0;i<dimension;i++)
+		printf("%2d ", C[i]);
 	printf("\n");
 
-	return 0;
+out:
+	return ret;
 }
 
 

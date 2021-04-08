@@ -1,3 +1,14 @@
+From 37800ca72def4967e7f243606541caea279c6fd3 Mon Sep 17 00:00:00 2001
+From: Anastassios Nanos <ananos@nubificus.co.uk>
+Date: Thu, 8 Apr 2021 21:18:09 +0100
+Subject: [PATCH 1/3] Libify vector_add
+
+Signed-off-by: Anastassios Nanos <ananos@nubificus.co.uk>
+---
+ vector_add/CMakeLists.txt | 7 ++++---
+ vector_add/vector_add.cpp | 3 ++-
+ 2 files changed, 6 insertions(+), 4 deletions(-)
+
 diff --git a/vector_add/CMakeLists.txt b/vector_add/CMakeLists.txt
 index 714509e..dab44e6 100755
 --- a/vector_add/CMakeLists.txt
@@ -27,3 +38,6 @@ index 5451547..f5ab3e0 100755
  	try{
  
  		//get all platforms (drivers)
+-- 
+2.25.1
+
