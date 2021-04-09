@@ -19,7 +19,7 @@ int vaccel_vector_add()
 
         printf("Initialized session with id: %u\n", sess.session_id);
 
-	char *library = "libvector_add.so";
+	char *library = "opencl_examples/build/vector_add/libvector_add.so";
 	char *operation = "vector_add";
 
         ret = vaccel_exec(&sess, library, operation, NULL, 0, NULL, 0);

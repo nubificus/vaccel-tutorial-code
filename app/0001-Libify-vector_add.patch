@@ -1,19 +1,19 @@
-From 37800ca72def4967e7f243606541caea279c6fd3 Mon Sep 17 00:00:00 2001
+From f647dda6f698c5bccb6873216ccf66a0cfa65280 Mon Sep 17 00:00:00 2001
 From: Anastassios Nanos <ananos@nubificus.co.uk>
-Date: Thu, 8 Apr 2021 21:18:09 +0100
-Subject: [PATCH 1/3] Libify vector_add
+Date: Fri, 9 Apr 2021 12:23:10 +0100
+Subject: [PATCH 1/2] Libify vector_add
 
 Signed-off-by: Anastassios Nanos <ananos@nubificus.co.uk>
 ---
- vector_add/CMakeLists.txt | 7 ++++---
+ vector_add/CMakeLists.txt | 9 ++++++---
  vector_add/vector_add.cpp | 3 ++-
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ 2 files changed, 8 insertions(+), 4 deletions(-)
 
 diff --git a/vector_add/CMakeLists.txt b/vector_add/CMakeLists.txt
-index 714509e..dab44e6 100755
+index 714509e..ed76381 100755
 --- a/vector_add/CMakeLists.txt
 +++ b/vector_add/CMakeLists.txt
-@@ -1,6 +1,7 @@
+@@ -1,6 +1,9 @@
  include_directories ("${PROJECT_SOURCE_DIR}/include" ${OpenCL_INCLUDE_DIRS})
  
 -add_executable(ocl_vector_add vector_add.cpp)
@@ -21,6 +21,8 @@ index 714509e..dab44e6 100755
 -target_link_libraries(ocl_vector_add ${OpenCL_LIBRARIES})
 +add_library(vector_add SHARED vector_add.cpp)
 +target_compile_options(vector_add PUBLIC -Wall -Wextra )
++set_target_properties(vector_add PROPERTIES ENABLE_EXPORTS on)
++target_link_libraries(vector_add  ${OpenCL_LIBRARIES})
 +set_property(TARGET vector_add PROPERTY LINK_FLAGS "-lOpenCL -shared")
 +
  
