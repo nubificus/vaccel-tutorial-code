@@ -7,7 +7,6 @@
 
 int vaccel_vector_add()
 {
-
 	int ret = 0;
 	struct vaccel_session sess;
 
@@ -43,5 +42,3 @@ int vector_add()
 
 	return 0;
 }
-
-
