@@ -7,10 +7,7 @@ int vector_add();
 
 int main(int argc, char **argv)
 {
-
 	vector_add();
 
 	return 0;
 }
-
-
