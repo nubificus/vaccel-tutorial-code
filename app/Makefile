@@ -3,7 +3,7 @@
 CC=gcc
 LD=gcc 
 CFLAGS=-Wall
-VACCEL_CFLAGS=-I../vaccelrt/src
+VACCEL_CFLAGS=-I../vaccelrt/src/include -I../vaccelrt/third-party/slog/src
 VACCEL_LDFLAGS=-L../vaccelrt/build/src -lvaccel -ldl
 VADD_LDFLAGS=-L${PWD}/opencl_examples/build/vector_add -lvector_add
 OCL_LDFLAGS=-L/usr/lib/x86_64-linux-gnu/ -lOpenCL
