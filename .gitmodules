@@ -4,4 +4,4 @@
 [submodule "vaccelrt"]
 	path = vaccelrt
 	url = https://github.com/cloudkernels/vaccelrt
-	branch = feat_genop
+	branch = main
