@@ -10,13 +10,13 @@ int vaccel_vector_add()
 	int ret = 0;
 	struct vaccel_session sess;
 
-        ret = vaccel_sess_init(&sess, 0);
+        ret = vaccel_session_init(&sess, 0);
         if (ret != VACCEL_OK) {
                 fprintf(stderr, "Could not initialize session\n");
                 return 1;
         }
 
-        printf("Initialized session with id: %u\n", sess.session_id);
+        printf("Initialized session with id: %lu\n", sess.id);
 
 	char *library = "opencl_examples/build/vector_add/libvector_add.so";
 	char *operation = "vector_add";
@@ -28,7 +28,7 @@ int vaccel_vector_add()
 	}
 
 close_session:
-        if (vaccel_sess_free(&sess) != VACCEL_OK) {
+        if (vaccel_session_release(&sess) != VACCEL_OK) {
                 fprintf(stderr, "Could not clear session\n");
                 return 1;
         }
