@@ -3,7 +3,8 @@
 CC=gcc
 LD=gcc 
 CFLAGS=-Wall
-VACCEL_INSTALL_PATH=/  #Add here the <path> of vaccel meson setup --prefix option 
+#Add here the <path> of vaccel meson setup --prefix option
+VACCEL_INSTALL_PATH=
 VACCEL_CFLAGS=-I${VACCEL_INSTALL_PATH}/include 
 VACCEL_LDFLAGS=-L${VACCEL_INSTALL_PATH}/lib/x86_64-linux-gnu -lvaccel -ldl
 VADD_LDFLAGS=-L${PWD}/opencl_examples/build/vector_add -lvector_add
