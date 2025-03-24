@@ -3,10 +3,11 @@
 CC=gcc
 LD=gcc 
 CFLAGS=-Wall
-VACCEL_CFLAGS=-I../vaccelrt/src/include -I../vaccelrt/third-party/slog/src
-VACCEL_LDFLAGS=-L../vaccelrt/build/src -lvaccel -ldl
+VACCEL_INSTALL_PATH=(pkg-config --variable=prefix vaccel)
+VACCEL_CFLAGS=-I${VACCEL_INSTALL_PATH}/include 
+VACCEL_LDFLAGS=-L${VACCEL_INSTALL_PATH}/lib/x86_64-linux-gnu -lvaccel -ldl
 VADD_LDFLAGS=-L${PWD}/opencl_examples/build/vector_add -lvector_add
-OCL_LDFLAGS=-L/usr/lib/x86_64-linux-gnu/ -lOpenCL
+OCL_LDFLAGS=(pkg-config --libs OpenCL)
 
 
 all: wrapper wrapper-args wrapper-vaccel wrapper-args-vaccel
